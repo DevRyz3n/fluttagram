@@ -1,6 +1,6 @@
 # fluttagram
 
-ig copy
+ig copy  （持续更新）
 
 ## Getting Started
 
