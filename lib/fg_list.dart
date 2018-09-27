@@ -87,7 +87,7 @@ class FgList extends StatelessWidget {
                                 width: 10.0,
                               ),
                               new Text(
-                                (snapshot.data.documents[index])['from'],
+                                (snapshot.data.documents[imgCount-index-1])['from'],
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               )
                             ],
@@ -102,7 +102,7 @@ class FgList extends StatelessWidget {
                     Flexible(
                       fit: FlexFit.loose,
                       child: new Image.network(
-                        (snapshot.data.documents[index])['img_url'],
+                        (snapshot.data.documents[imgCount-index-1])['img_url'],
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -136,7 +136,7 @@ class FgList extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        "24,127 likes",
+                        "9,999 likes",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -161,7 +161,7 @@ class FgList extends StatelessWidget {
                           ),
                           Expanded(
                             child: new TextField(
-                              style: TextStyle(fontSize: 14.0),
+                              style: TextStyle(fontSize: 14.0, color: Colors.black87),
                               decoration: new InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Add a comment...",
@@ -174,7 +174,7 @@ class FgList extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child:
-                      Text("??? HOURS AGO", style: TextStyle(color: Colors.grey, fontSize: 10.0)),
+                      Text((snapshot.data.documents[imgCount-index-1])['time'], style: TextStyle(color: Colors.grey, fontSize: 11.0, fontWeight: FontWeight.bold)),
                     )
                   ],
                 ),

@@ -15,6 +15,20 @@ Firestore _store = Firestore.instance;
 class FgHome extends StatelessWidget {
   static String name = FgMain.staticName;
 
+  String _getDateTime (){
+    var now = new DateTime.now();
+    return (now.month.toString()
+        + "-"
+        + now.day.toString()
+        + " "
+        + now.hour.toString()
+        + ":"
+        + now.minute.toString());
+  }
+
+  int _getTimestamp(){
+    return new DateTime.now().millisecondsSinceEpoch;
+  }
 
   /*FgHome({Key key, @required this.name}) : super(key: key);
 
@@ -34,7 +48,17 @@ class FgHome extends StatelessWidget {
             _storage.ref().child("imgs/").child((image.hashCode).toString());
         StorageUploadTask uploadTask = reference.putFile(image);
         String imgUrl = (await uploadTask.future).downloadUrl.toString();
-        _store.collection("imgs").document().setData({'from':name, 'img_url':imgUrl});
+        var now = new DateTime.now();
+        String time = now.month.toString()
+            + "-"
+            + now.day.toString()
+            + " "
+            + now.hour.toString()
+            + ":"
+            + now.minute.toString();
+
+        _store.collection("imgs").document()
+            .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time});
       },
       child: new Icon(Icons.photo_camera),
     ),
@@ -91,7 +115,17 @@ class FgHome extends StatelessWidget {
                         .child((image.hashCode).toString());
                     StorageUploadTask uploadTask = reference.putFile(image);
                     String imgUrl = (await uploadTask.future).downloadUrl.toString();
-                    _store.collection("imgs").document().setData({'from':name, 'img_url':imgUrl});
+                    var now = new DateTime.now();
+                    String time = now.month.toString()
+                        + "-"
+                        + now.day.toString()
+                        + " "
+                        + now.hour.toString()
+                        + ":"
+                        + now.minute.toString();
+
+                    _store.collection("imgs").document()
+                        .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time});
                   },
                 ),
                 new IconButton(
