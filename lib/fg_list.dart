@@ -38,19 +38,26 @@ class FgList extends StatelessWidget {
     );
   }
 
-   Text _hasLikes(snapshot, int index){
-      int likes = (snapshot.data.documents[_imgCount-index-1])['likes'];
-      if(likes == 0){
+   Text _hasLikes(snapshot, int index) {
+      List likes = (snapshot.data.documents[_imgCount-index-1])['likes'];
+      if(likes.length == 0){
         return null;
       } else {
         return new Text(
-          likes.toString() + " likes",
+          likes.length.toString() + " likes",
           style: TextStyle(fontWeight: FontWeight.bold),
         );
       }
   }
 
-  ImageIcon _isLike(){}
+  _clickLikeButton(AsyncSnapshot<QuerySnapshot> snapshot,int index) async {
+    //(snapshot.data.documents[_imgCount-index-1]).reference.collection('likes').document();
+
+
+
+  }
+
+  // ImageIcon _isLike(){}
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +67,6 @@ class FgList extends StatelessWidget {
         stream: _store.collection('imgs').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
           if(!snapshot.hasData) return const Text('loading...');
-
           _imgCount = snapshot.data.documents.length;
           // print(imgCount.toString()+'......................................................');
 
@@ -124,7 +130,7 @@ class FgList extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(0.0),
+                      padding: const EdgeInsets.fromLTRB(0.0,0.0,12.0,0.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -133,8 +139,7 @@ class FgList extends StatelessWidget {
                             children: <Widget>[
                               new IconButton(
                                 icon: Icon(Icons.favorite_border),
-                                onPressed: () async {_store.collection("imgs").document()
-                                    .setData({'like_from_'+name:true});},
+                                onPressed: null,
                               ),
                               new SizedBox(
                                 width: 1.0,
