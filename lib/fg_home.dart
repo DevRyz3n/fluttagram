@@ -58,7 +58,7 @@ class FgHome extends StatelessWidget {
             + now.minute.toString();
 
         _store.collection("imgs").document()
-            .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time});
+            .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time, 'likes':0});
       },
       child: new Icon(Icons.photo_camera),
     ),
@@ -125,7 +125,7 @@ class FgHome extends StatelessWidget {
                         + now.minute.toString();
 
                     _store.collection("imgs").document()
-                        .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time});
+                        .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time, 'likes':0});
                   },
                 ),
                 new IconButton(

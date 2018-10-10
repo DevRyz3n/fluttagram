@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fluttagram/fg_main.dart';
 import 'package:fluttagram/fg_stories.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,8 @@ import "package:pull_to_refresh/pull_to_refresh.dart";
 class FgList extends StatelessWidget {
   RefreshController _controller = new RefreshController();
   Firestore _store = Firestore.instance;
+  int _imgCount;
+  static String name = FgMain.staticName;
 
   void _onRefresh(bool up) {
     if (up)
@@ -35,6 +38,20 @@ class FgList extends StatelessWidget {
     );
   }
 
+   Text _hasLikes(snapshot, int index){
+      int likes = (snapshot.data.documents[_imgCount-index-1])['likes'];
+      if(likes == 0){
+        return null;
+      } else {
+        return new Text(
+          likes.toString() + " likes",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        );
+      }
+  }
+
+  ImageIcon _isLike(){}
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -44,7 +61,7 @@ class FgList extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
           if(!snapshot.hasData) return const Text('loading...');
 
-          int imgCount = snapshot.data.documents.length;
+          _imgCount = snapshot.data.documents.length;
           // print(imgCount.toString()+'......................................................');
 
           return new SmartRefresher(
@@ -55,7 +72,7 @@ class FgList extends StatelessWidget {
               headerBuilder: _headerCreate,
               footerBuilder: _footerCreate,
               child: ListView.builder(
-                itemCount: imgCount,
+                itemCount: _imgCount,
                 itemBuilder: (_, int index) => index < 0  // 0: hide stories  todo: 暂时用不上Stories
                     ? new SizedBox(
                   child: new FgStories(),
@@ -87,7 +104,7 @@ class FgList extends StatelessWidget {
                                 width: 10.0,
                               ),
                               new Text(
-                                (snapshot.data.documents[imgCount-index-1])['from'],
+                                (snapshot.data.documents[_imgCount-index-1])['from'],
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               )
                             ],
@@ -102,23 +119,25 @@ class FgList extends StatelessWidget {
                     Flexible(
                       fit: FlexFit.loose,
                       child: new Image.network(
-                        (snapshot.data.documents[imgCount-index-1])['img_url'],
+                        (snapshot.data.documents[_imgCount-index-1])['img_url'],
                         fit: BoxFit.cover,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(0.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              new Icon(
-                                Icons.favorite_border,
+                              new IconButton(
+                                icon: Icon(Icons.favorite_border),
+                                onPressed: () async {_store.collection("imgs").document()
+                                    .setData({'like_from_'+name:true});},
                               ),
                               new SizedBox(
-                                width: 16.0,
+                                width: 1.0,
                               ),
                               new Icon(
                                 Icons.chat_bubble_outline,
@@ -135,10 +154,7 @@ class FgList extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        "9,999 likes",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      child: _hasLikes(snapshot, index)
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16.0, .0, .0, .0),
@@ -174,7 +190,7 @@ class FgList extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child:
-                      Text((snapshot.data.documents[imgCount-index-1])['time'], style: TextStyle(color: Colors.grey, fontSize: 11.0, fontWeight: FontWeight.bold)),
+                      Text((snapshot.data.documents[_imgCount-index-1])['time'], style: TextStyle(color: Colors.grey, fontSize: 11.0, fontWeight: FontWeight.bold)),
                     )
                   ],
                 ),
