@@ -123,9 +123,8 @@ class FgHome extends StatelessWidget {
                         + now.hour.toString()
                         + ":"
                         + now.minute.toString();
-                    List list = new List<String>();
                     _store.collection("imgs").document()
-                        .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time, 'likes': list});
+                        .setData({'from':name, 'img_url':imgUrl, 'timestamp':now.millisecondsSinceEpoch, 'time':time, 'likes': 0});
 
                   },
                 ),

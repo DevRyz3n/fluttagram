@@ -9,6 +9,8 @@ import "package:pull_to_refresh/pull_to_refresh.dart";
 class FgList extends StatelessWidget {
   RefreshController _controller = new RefreshController();
   Firestore _store = Firestore.instance;
+
+  CollectionReference get msg => _store.collection('msgs');
   int _imgCount;
   static String name = FgMain.staticName;
 
@@ -39,22 +41,19 @@ class FgList extends StatelessWidget {
   }
 
    Text _hasLikes(snapshot, int index) {
-      List likes = (snapshot.data.documents[_imgCount-index-1])['likes'];
-      if(likes.length == 0){
+      int likes = (snapshot.data.documents[_imgCount-index-1])['likes'];
+      if(likes == 0){
         return null;
       } else {
         return new Text(
-          likes.length.toString() + " likes",
+          likes.toString() + " likes",
           style: TextStyle(fontWeight: FontWeight.bold),
         );
       }
   }
 
   _clickLikeButton(AsyncSnapshot<QuerySnapshot> snapshot,int index) async {
-    //(snapshot.data.documents[_imgCount-index-1]).reference.collection('likes').document();
-
-
-
+    
   }
 
   // ImageIcon _isLike(){}
@@ -157,6 +156,7 @@ class FgList extends StatelessWidget {
                         ],
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: _hasLikes(snapshot, index)
